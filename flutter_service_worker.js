@@ -48,8 +48,12 @@ self.addEventListener("install", (event) => {
   self.skipWaiting();
   return event.waitUntil(
     caches.open(TEMP).then((cache) => {
-      return cache.addAll(
-        Object.keys(RESOURCES).map((value) => new Request(value, {'cache': 'reload'})));
+      return Promise.allSettled(
+        Object.keys(RESOURCES).map((value) => 
+          cache.add(new Request(value, {'cache': 'reload'}))
+            .catch(() => console.log('Failed to cache: ' + value))
+        )
+      );
     })
   );
 });
