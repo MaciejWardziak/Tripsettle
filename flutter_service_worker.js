@@ -49,7 +49,7 @@ self.addEventListener("install", (event) => {
   return event.waitUntil(
     caches.open(TEMP).then((cache) => {
       return cache.addAll(
-        CORE.map((value) => new Request(value, {'cache': 'reload'})));
+        Object.keys(RESOURCES).map((value) => new Request(value, {'cache': 'reload'})));
     })
   );
 });
